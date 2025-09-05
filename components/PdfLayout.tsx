@@ -2,7 +2,7 @@ import React from 'react';
 import type { ResumeData } from '../types';
 import { MailIcon, PhoneIcon, LocationIcon } from './PdfIcons';
 
-const qrCodeUrl = "https://nkwlaqmbnaftpykkkhss.supabase.co/storage/v1/object/sign/images/myqrcode_39033.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8yNjJmZjYwZi1kZGZlLTQzZDAtOTNhZi0xYzNiYjJkZjgwMzUiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvbXlxcmNvZGVfMzkwMzMucG5nIiwiaWF0IjoxNzU3MDM4MDU1LCJleHAiOjMzMjkzMDM4MDU1fQ.Tzb1odq9HchYdmP6Fq8eK8fNYe8GvbLctwY3ubN-Zcw";
+const qrCodeUrl = "https://nkwlaqmbnaftpykkkhss.supabase.co/storage/v1/object/sign/images/qr_code%20(2)%20(1).png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8yNjJmZjYwZi1kZGZlLTQzZDAtOTNhZi0xYzNiYjJkZjgwMzUiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvcXJfY29kZSAoMikgKDEpLnBuZyIsImlhdCI6MTc1NzA0MTQyNiwiZXhwIjozMzI5MzA0MTQyNn0.8Z-v3p6z2h89yniLlMQjejMOM_T7h6ScETBPMFD556w";
 
 const PdfLayout: React.FC<{ data: ResumeData }> = ({ data }) => {
   return (
