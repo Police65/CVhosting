@@ -1,0 +1,5 @@
+{
+  "name": "Interactive AI-Powered CV",
+  "description": "A modern, interactive, and aesthetically pleasing curriculum vitae built with React and Tailwind CSS. It features an AI assistant powered by Gemini to answer questions, user analytics via Supabase, and a PDF download option.",
+  "requestFramePermissions": []
+}
