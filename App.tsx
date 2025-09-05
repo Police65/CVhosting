@@ -185,16 +185,16 @@ const App: React.FC = () => {
 
     const generatePdf = () => {
         handleTrackClick('download_cv_button');
-        
+    
         const pdfContainer = document.createElement('div');
         pdfContainer.style.position = 'absolute';
         pdfContainer.style.left = '-9999px';
         pdfContainer.style.top = '0';
         document.body.appendChild(pdfContainer);
-
+    
         const root = ReactDOM.createRoot(pdfContainer);
         root.render(<PdfLayout data={resumeData} />);
-
+    
         setTimeout(() => {
             const pdfElement = pdfContainer.querySelector('#pdf-render-content');
             if (!pdfElement) {
@@ -203,8 +203,13 @@ const App: React.FC = () => {
                 document.body.removeChild(pdfContainer);
                 return;
             }
-
-            html2canvas(pdfElement as HTMLElement, {
+    
+            const htmlElement = pdfElement as HTMLElement;
+            // Temporarily adjust style for full capture
+            const originalHeight = htmlElement.style.height;
+            htmlElement.style.height = 'auto';
+    
+            html2canvas(htmlElement, {
                 scale: 2,
                 useCORS: true,
             }).then(canvas => {
@@ -212,13 +217,28 @@ const App: React.FC = () => {
                 const pdf = new jsPDF('p', 'mm', 'a4');
                 const pdfWidth = pdf.internal.pageSize.getWidth();
                 const pdfHeight = pdf.internal.pageSize.getHeight();
+    
+                const canvasAspectRatio = canvas.height / canvas.width;
+    
+                let finalPdfHeight = pdfWidth * canvasAspectRatio;
+                let finalPdfWidth = pdfWidth;
+    
+                // If calculated height is taller than page, scale down to fit page height
+                if (finalPdfHeight > pdfHeight) {
+                    finalPdfHeight = pdfHeight;
+                    finalPdfWidth = pdfHeight * (canvas.width / canvas.height);
+                }
                 
-                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                const xOffset = (pdfWidth - finalPdfWidth) / 2;
+    
+                pdf.addImage(imgData, 'PNG', xOffset, 0, finalPdfWidth, finalPdfHeight);
                 pdf.save(`CV_${resumeData.name.replace(' ', '_')}.pdf`);
-
+    
             }).catch((err) => {
                 console.error("PDF generation failed:", err);
             }).finally(() => {
+                // Restore original style and clean up
+                htmlElement.style.height = originalHeight;
                 root.unmount();
                 document.body.removeChild(pdfContainer);
             });

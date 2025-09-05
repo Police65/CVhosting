@@ -70,7 +70,7 @@ const PdfLayout: React.FC<{ data: ResumeData }> = ({ data }) => {
       </aside>
 
       {/* Right Column */}
-      <main className="w-[65%] p-8 text-slate-800 overflow-y-auto">
+      <main className="w-[65%] p-8 text-slate-800">
         <section>
           <h2 className="text-2xl font-bold text-slate-800 uppercase tracking-wider border-b-2 border-slate-200 pb-2 mb-6">Formación y Experiencia</h2>
 
