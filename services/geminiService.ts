@@ -1,11 +1,19 @@
-
 import { GoogleGenAI } from "@google/genai";
+import { geminiConfig } from '../config'; // Importar desde el archivo de configuración
 
-// Fix: Aligned with @google/genai guidelines by initializing the client
-// directly with `process.env.API_KEY` and removing the explicit null check.
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+let ai: GoogleGenAI | null = null;
+
+if (geminiConfig.apiKey) {
+    ai = new GoogleGenAI({ apiKey: geminiConfig.apiKey });
+} else {
+    console.warn("Gemini API key not found. AI Assistant will be disabled.");
+}
 
 export const askAssistant = async (question: string, context: string): Promise<string> => {
+    if (!ai) {
+        return "Lo siento, el asistente de IA no está configurado correctamente. Falta una clave de API.";
+    }
+    
     try {
         const systemInstruction = `Eres un asistente servicial para el currículum de Fermin Chirinos. Tu única fuente de conocimiento es el siguiente texto del currículum. Responde las preguntas basándote ÚNICAMENTE en este texto. Si la respuesta no se encuentra en el texto, di amablemente que no tienes esa información. Sé conciso y profesional. No inventes información. El currículum está en formato JSON a continuación:\n\n${context}`;
         

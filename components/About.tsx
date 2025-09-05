@@ -9,7 +9,7 @@ interface AboutProps {
 
 const About: React.FC<AboutProps> = ({ name, title, about, avatarUrl }) => {
     return (
-        <section id="about" className="flex flex-col items-center gap-10 md:flex-row">
+        <section id="about" className="fade-in-element flex flex-col items-center gap-10 md:flex-row" style={{ transitionDelay: '150ms' }}>
             <div className="flex-shrink-0">
                 <img
                     src={avatarUrl}

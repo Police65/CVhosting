@@ -22,7 +22,7 @@ const Header: React.FC<HeaderProps> = ({ onTrackClick }) => {
                             key={link.href}
                             href={link.href}
                             onClick={() => onTrackClick(`nav_${link.text.toLowerCase()}`)}
-                            className="text-sm font-medium text-slate-700 transition-colors hover:text-slate-900"
+                            className="text-sm font-medium text-slate-700 transition-all duration-200 hover:text-slate-900 hover:scale-110"
                         >
                             {link.text}
                         </a>

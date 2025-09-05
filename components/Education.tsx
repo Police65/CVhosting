@@ -7,8 +7,8 @@ interface EducationProps {
     items: TimelineItemData[];
 }
 
-const TimelineItem: React.FC<{ item: TimelineItemData }> = ({ item }) => (
-    <div className="relative mb-8 last:mb-0">
+const TimelineItem: React.FC<{ item: TimelineItemData; className?: string; style?: React.CSSProperties }> = ({ item, className, style }) => (
+    <div className={`relative mb-8 last:mb-0 ${className || ''}`} style={style}>
         <div className="absolute -left-[42px] top-1 flex h-10 w-10 items-center justify-center rounded-full bg-slate-200">
             <span className="material-symbols-outlined text-xl text-slate-600">{item.icon}</span>
         </div>
@@ -20,11 +20,16 @@ const TimelineItem: React.FC<{ item: TimelineItemData }> = ({ item }) => (
 
 const Education: React.FC<EducationProps> = ({ title, items }) => {
     return (
-        <section id="education">
+        <section id="education" className="fade-in-element">
             <h2 className="text-3xl font-bold tracking-tight text-slate-900">{title}</h2>
             <div className="mt-8 border-l-2 border-slate-200 pl-12">
                 {items.map((item, index) => (
-                    <TimelineItem key={index} item={item} />
+                    <TimelineItem 
+                        key={index} 
+                        item={item} 
+                        className="fade-in-element"
+                        style={{ transitionDelay: `${index * 150}ms` }}
+                    />
                 ))}
             </div>
         </section>

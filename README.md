@@ -1,15 +1,20 @@
-# CVhosting
-Curriculum
-Esta web simple esta hecha simplemente para trabajo, puedes visitarla para conocer
-acerca de mi un poco mas o para contrataciones
-o si simplemente quieres contactarme para lo que sea, siempre es divertido cuando dos programadores se juntan
+<div align="center">
+<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+</div>
 
-visitala en 
-https://police65.github.io/CVhosting/
+# Run and deploy your AI Studio app
 
-This simple website is made simply for work, you can visit it to know
-about me a little more or for hiring
-or if you just want to contact me for whatever, it's always fun when two programmers get together
+This contains everything you need to run your app locally.
 
-visit it in
-https://police65.github.io/CVhosting/
+View your app in AI Studio: https://ai.studio/apps/drive/1FaXfJ1BKvJT0z8kN78tT88Ha0RjND2na
+
+## Run Locally
+
+**Prerequisites:**  Node.js
+
+
+1. Install dependencies:
+   `npm install`
+2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+3. Run the app:
+   `npm run dev`

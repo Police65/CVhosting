@@ -101,7 +101,6 @@ const resumeData: ResumeData = {
     },
     contact: {
         location: "Valencia - Carabobo, Venezuela",
-        // Fix: Added email and phone to satisfy ContactProps
         email: "ferlpzwork65ds@gmail.com",
         phone: "+58 4244358426",
         links: [
@@ -109,21 +108,18 @@ const resumeData: ResumeData = {
                 name: "linkedin",
                 href: "https://www.linkedin.com/in/fermin-chirinos-491770253/",
                 text: "LinkedIn",
-                // Fix: Added icon to satisfy ContactLink type
                 icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
             },
             {
                 name: "github",
                 href: "https://github.com/Police65",
                 text: "GitHub",
-                // Fix: Added icon to satisfy ContactLink type
                 icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
             },
             {
                 name: "instagram",
                 href: "https://instagram.com/lefer_bleu?igshid=YmMyMTA2M2Y=",
                 text: "Instagram",
-                // Fix: Added icon to satisfy ContactLink type
                 icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
             },
         ],
@@ -133,13 +129,29 @@ const resumeData: ResumeData = {
 const App: React.FC = () => {
     const [cvContext, setCvContext] = useState('');
     const [visitId, setVisitId] = useState<number | null>(null);
+    const [isContentLoaded, setIsContentLoaded] = useState(false);
 
     useEffect(() => {
+        // Animation observer for fade-in elements
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        const elementsToAnimate = document.querySelectorAll('.fade-in-element');
+        elementsToAnimate.forEach(el => observer.observe(el));
+
+        // Initial load animation trigger
+        const timer = setTimeout(() => setIsContentLoaded(true), 100);
+
+        // Visit tracking logic
         const initializeVisitTracking = async () => {
             try {
-                // Use sessionStorage to keep the visit ID for the session
                 const storedVisitId = sessionStorage.getItem('visitId');
-
                 if (storedVisitId) {
                     setVisitId(Number(storedVisitId));
                 } else {
@@ -155,10 +167,14 @@ const App: React.FC = () => {
         };
 
         initializeVisitTracking();
-
-        // Set the CV context for the AI assistant
         const simplifiedData = { ...resumeData, contact: { ...resumeData.contact }};
         setCvContext(JSON.stringify(simplifiedData, null, 2));
+
+        // Cleanup
+        return () => {
+            clearTimeout(timer);
+            elementsToAnimate.forEach(el => observer.unobserve(el));
+        };
     }, []);
 
     const handleTrackClick = (elementName: string) => {
@@ -170,49 +186,43 @@ const App: React.FC = () => {
     const generatePdf = () => {
         handleTrackClick('download_cv_button');
         
-        // 1. Create a temporary container for the PDF layout
         const pdfContainer = document.createElement('div');
         pdfContainer.style.position = 'absolute';
-        pdfContainer.style.left = '-9999px'; // Position off-screen
+        pdfContainer.style.left = '-9999px';
         pdfContainer.style.top = '0';
         document.body.appendChild(pdfContainer);
 
-        // 2. Render the special PDF layout component into the container
         const root = ReactDOM.createRoot(pdfContainer);
         root.render(<PdfLayout data={resumeData} />);
 
-        // 3. Use a timeout to ensure the component and images have rendered
         setTimeout(() => {
             const pdfElement = pdfContainer.querySelector('#pdf-render-content');
             if (!pdfElement) {
                 console.error("PDF content element not found for rendering.");
-                 // Cleanup before returning
                 root.unmount();
                 document.body.removeChild(pdfContainer);
                 return;
             }
 
             html2canvas(pdfElement as HTMLElement, {
-                scale: 2, // Higher scale for better quality
-                useCORS: true, // Important for external images
+                scale: 2,
+                useCORS: true,
             }).then(canvas => {
                 const imgData = canvas.toDataURL('image/png');
                 const pdf = new jsPDF('p', 'mm', 'a4');
                 const pdfWidth = pdf.internal.pageSize.getWidth();
                 const pdfHeight = pdf.internal.pageSize.getHeight();
                 
-                // Add the captured image to the PDF, fitting it to the page
                 pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
                 pdf.save(`CV_${resumeData.name.replace(' ', '_')}.pdf`);
 
             }).catch((err) => {
                 console.error("PDF generation failed:", err);
             }).finally(() => {
-                 // 4. Cleanup: Unmount the component and remove the container
                 root.unmount();
                 document.body.removeChild(pdfContainer);
             });
-        }, 500); // 500ms delay to allow for rendering
+        }, 500);
     };
 
 
@@ -222,8 +232,7 @@ const App: React.FC = () => {
                 <div className="layout-container flex h-full grow flex-col">
                     <Header onTrackClick={handleTrackClick} />
                     <main className="flex-1 px-4 py-10 md:px-20 lg:px-40">
-                        <div className="mx-auto max-w-5xl rounded-2xl bg-slate-50/80 p-6 shadow-2xl backdrop-blur-sm sm:p-8 md:p-12">
-                            {/* Fix: About component props now match its new definition */}
+                        <div className={`cv-card mx-auto max-w-5xl rounded-2xl bg-slate-50/80 p-6 shadow-2xl backdrop-blur-sm sm:p-8 md:p-12 ${isContentLoaded ? 'loaded' : ''}`}>
                             <About
                                 name={resumeData.name}
                                 title={resumeData.title}
@@ -235,16 +244,15 @@ const App: React.FC = () => {
                                 <Skills skills={resumeData.skills} />
                                 <Education title="Educación" items={resumeData.education} />
                                 <Training title="Formación Adicional" items={resumeData.training} />
-                                <div id="download-cv-section" className="mt-20 text-center">
+                                <div id="download-cv-section" className="mt-20 text-center fade-in-element">
                                     <button 
                                         onClick={generatePdf}
-                                        className="inline-flex items-center gap-2 rounded-md bg-[#1172d4] px-6 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-blue-600"
+                                        className="inline-flex items-center gap-2 rounded-md bg-[#1172d4] px-6 py-3 text-base font-semibold text-white shadow-sm transition-transform duration-200 hover:scale-105"
                                     >
                                         <span className="material-symbols-outlined">download</span>
                                         Descargar CV
                                     </button>
                                 </div>
-                                {/* Fix: Passed correct props to Contact component and removed unsupported `location` prop. */}
                                 <Contact 
                                     email={resumeData.contact.email}
                                     phone={resumeData.contact.phone}

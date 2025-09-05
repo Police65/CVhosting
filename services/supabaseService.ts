@@ -1,11 +1,14 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { parseUserAgent } from '../utils/userAgentParser';
+import { supabaseConfig } from '../config'; // Importar desde el archivo de configuración
 
-// Claves del proyecto de Supabase para habilitar la analítica.
-const supabaseUrl = 'https://nkwlaqmbnaftpykkkhss.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5rd2xhcW1ibmFmdHB5a2traHNzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcwMTg2MjEsImV4cCI6MjA3MjU5NDYyMX0.8A7x7MKNn5_DjNKfP2j_111TDTyApTyjtVAtaHyYkOQ';
+let supabase: SupabaseClient | null = null;
 
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+if (supabaseConfig.url && supabaseConfig.anonKey) {
+  supabase = createClient(supabaseConfig.url, supabaseConfig.anonKey);
+} else {
+  console.warn("Supabase credentials not found. Analytics will be disabled.");
+}
 
 /**
  * Tracks a page visit by calling a normalized Supabase RPC function.
@@ -13,6 +16,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
  * @returns The ID of the visit record, or null if tracking fails.
  */
 export const trackVisit = async (): Promise<number | null> => {
+    if (!supabase) return null; // No hacer nada si Supabase no está configurado
     try {
         const { browser, os, device } = parseUserAgent();
         // This RPC function 'track_visit_normalized' must be created in your Supabase SQL Editor.
@@ -42,7 +46,7 @@ export const trackVisit = async (): Promise<number | null> => {
  * @param visitId - The ID of the current user's visit.
  */
 export const trackClick = async (elementName: string, visitId: number): Promise<void> => {
-    if (!visitId) return;
+    if (!supabase || !visitId) return;
     try {
         const { error } = await supabase.from('clicks').insert({
             element_name: elementName,
