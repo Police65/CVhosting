@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { askAssistant } from '../services/geminiService';
 
 interface Message {
@@ -8,10 +8,9 @@ interface Message {
 
 interface AIAssistantProps {
     cvContext: string;
-    onTrackClick: (elementName: string) => void;
 }
 
-const AIAssistant: React.FC<AIAssistantProps> = ({ cvContext, onTrackClick }) => {
+const AIAssistant: React.FC<AIAssistantProps> = ({ cvContext }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState<Message[]>([
         { sender: 'ai', text: '¡Hola! Soy el asistente de IA de Fermin. ¿En qué puedo ayudarte sobre su currículum?' }
@@ -26,14 +25,9 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ cvContext, onTrackClick }) =>
 
     useEffect(scrollToBottom, [messages]);
 
-    const toggleOpen = useCallback(() => {
-      setIsOpen(prev => {
-          if (!prev) { // If opening for the first time
-              onTrackClick('open_ai_assistant');
-          }
-          return !prev;
-      });
-    }, [onTrackClick]);
+    const toggleOpen = () => {
+        setIsOpen(prev => !prev);
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -43,7 +37,6 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ cvContext, onTrackClick }) =>
         setMessages(prev => [...prev, userMessage]);
         setInput('');
         setIsLoading(true);
-        onTrackClick(`ask_ai_assistant_question`);
 
         try {
             const aiResponse = await askAssistant(input, cvContext);

@@ -7,10 +7,8 @@ import Skills from './components/Skills';
 import Education from './components/Education';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-import AIAssistant from './components/AIAssistant';
 import Training from './components/Training';
 import PdfLayout from './components/PdfLayout';
-import { trackVisit, trackClick } from './services/supabaseService';
 import type { ResumeData } from './types';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -21,10 +19,28 @@ const resumeData: ResumeData = {
     name: "Fermin Chirinos",
     title: "Desarrollador de Software y Automatización con IA",
     avatarUrl: imageUrls.avatar,
-    about: "Hola, soy Fermin Chirinos. Estudiante de informática en IUTEPAL y un apasionado desarrollador con un fuerte enfoque en automatizaciones y soluciones que emplean inteligencia artificial. Mi especialidad es crear herramientas eficientes como bots de atención al público con IA y sistemas de acciones automáticas. Tambien programas de escritorio y apps. Me encantan los retos, estoy siempre aprendiendo y me dedico por completo a mi trabajo.",
+    about: "Hola, soy Fermin Chirinos. T.S.U. en Informática egresado de IUTEPAL y un apasionado desarrollador con un fuerte enfoque en automatizaciones, agentes autónomos y soluciones que emplean inteligencia artificial. Mi especialidad es crear herramientas eficientes como bots de atención al público con IA, flujos de trabajo automatizados y sistemas de acciones automáticas. También programas de escritorio y apps. Me encantan los retos, estoy siempre aprendiendo y me dedico por completo a mi trabajo.",
     experience: [
         {
-            period: "Feb. 2024 - Presente",
+            period: "Abr. 2026 - Jul. 2026",
+            title: "Desarrollador de Software y Automatizaciones",
+            company: "Cámara de Industriales del Estado Carabobo",
+            description: [
+                "Desarrollo de soluciones de software y automatización para procesos internos.",
+                "Implementación de herramientas con IA para optimizar flujos de trabajo.",
+            ],
+        },
+        {
+            period: "Feb. 2026 - May. 2026",
+            title: "Desarrollador de Agente de Ventas Automatizadas",
+            company: "M&T Inversiones",
+            description: [
+                "Diseño e implementación de un agente de ventas automatizado con IA para atención al cliente.",
+                "Integración del agente con canales de comunicación para automatizar el proceso comercial.",
+            ],
+        },
+        {
+            period: "Feb. 2025 - Mar. 2026",
             title: "Pasantías de Desarrollo de Software",
             company: "Cámara de Industriales del Estado Carabobo",
             description: [
@@ -66,8 +82,8 @@ const resumeData: ResumeData = {
     education: [
         {
             icon: "school",
-            period: "En curso",
-            title: "T.S.U en Informática",
+            period: "2022 - 2025",
+            title: "T.S.U. en Informática",
             subtitle: "IUTEPAL: Instituto Tecnológico 'Juan Pablo Pérez Alfonzo'",
         },
         {
@@ -92,8 +108,8 @@ const resumeData: ResumeData = {
         },
     ],
     skills: {
-        strong: ["TypeScript", "JavaScript", "React", "Next.js", "Tailwind CSS", "Vite", "PostgreSQL", "Supabase", "Firebase", "Webhooks y Flujos de Trabajo", "Bots con IA", "Flutter", "C#"],
-        basic: ["MySQL", "SQL Server Management Studio", "Python", "Java (Android Studio)", "GOlang", "Svelte JS"],
+        strong: ["TypeScript", "JavaScript", "React", "Next.js", "Tailwind CSS", "Vite", "PostgreSQL", "Supabase", "Firebase", "n8n", "Agentes Autónomos", "Uso adecuado de herramientas de IA", "Webhooks y Flujos de Trabajo", "Bots con IA", "Flutter", "C#"],
+        basic: ["MySQL", "SQL Server Management Studio", "Python", "Java (Android Studio)", "GOlang", "Svelte JS", "Tauri", "Bootstrap", "PHP", "Rust"],
         languages: [
             { flag: "🇪🇸", lang: "Español", level: "Nativo" },
             { flag: "🇬🇧", lang: "Inglés", level: "Fluido" },
@@ -116,19 +132,11 @@ const resumeData: ResumeData = {
                 text: "GitHub",
                 icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
             },
-            {
-                name: "instagram",
-                href: "https://instagram.com/lefer_bleu?igshid=YmMyMTA2M2Y=",
-                text: "Instagram",
-                icon: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-            },
         ],
     },
 };
 
 const App: React.FC = () => {
-    const [cvContext, setCvContext] = useState('');
-    const [visitId, setVisitId] = useState<number | null>(null);
     const [isContentLoaded, setIsContentLoaded] = useState(false);
 
     useEffect(() => {
@@ -148,28 +156,6 @@ const App: React.FC = () => {
         // Initial load animation trigger
         const timer = setTimeout(() => setIsContentLoaded(true), 100);
 
-        // Visit tracking logic
-        const initializeVisitTracking = async () => {
-            try {
-                const storedVisitId = sessionStorage.getItem('visitId');
-                if (storedVisitId) {
-                    setVisitId(Number(storedVisitId));
-                } else {
-                    const newVisitId = await trackVisit();
-                    if (newVisitId) {
-                        setVisitId(newVisitId);
-                        sessionStorage.setItem('visitId', String(newVisitId));
-                    }
-                }
-            } catch (error) {
-                console.error("Failed to initialize visit tracking:", error);
-            }
-        };
-
-        initializeVisitTracking();
-        const simplifiedData = { ...resumeData, contact: { ...resumeData.contact }};
-        setCvContext(JSON.stringify(simplifiedData, null, 2));
-
         // Cleanup
         return () => {
             clearTimeout(timer);
@@ -177,14 +163,7 @@ const App: React.FC = () => {
         };
     }, []);
 
-    const handleTrackClick = (elementName: string) => {
-        if (visitId) {
-            trackClick(elementName, visitId);
-        }
-    };
-
     const generatePdf = () => {
-        handleTrackClick('download_cv_button');
     
         const pdfContainer = document.createElement('div');
         pdfContainer.style.position = 'absolute';
@@ -214,24 +193,21 @@ const App: React.FC = () => {
                 useCORS: true,
             }).then(canvas => {
                 const imgData = canvas.toDataURL('image/png');
-                const pdf = new jsPDF('p', 'mm', 'a4');
-                const pdfWidth = pdf.internal.pageSize.getWidth();
-                const pdfHeight = pdf.internal.pageSize.getHeight();
-    
-                const canvasAspectRatio = canvas.height / canvas.width;
-    
-                let finalPdfHeight = pdfWidth * canvasAspectRatio;
-                let finalPdfWidth = pdfWidth;
-    
-                // If calculated height is taller than page, scale down to fit page height
-                if (finalPdfHeight > pdfHeight) {
-                    finalPdfHeight = pdfHeight;
-                    finalPdfWidth = pdfHeight * (canvas.width / canvas.height);
-                }
                 
-                const xOffset = (pdfWidth - finalPdfWidth) / 2;
-    
-                pdf.addImage(imgData, 'PNG', xOffset, 0, finalPdfWidth, finalPdfHeight);
+                // Ancho base tamaño carta (Letter) en mm
+                const pdfWidth = 215.9; 
+                // Calculamos la altura manteniendo la relación de aspecto exacta del contenedor
+                const pdfHeight = pdfWidth * (canvas.height / canvas.width);
+
+                // Al usar un formato de tamaño dinámico evitamos que jsPDF intente escalar 
+                // la imagen dejando márgenes (barras) blancas a los lados
+                const pdf = new jsPDF({
+                    orientation: 'p',
+                    unit: 'mm',
+                    format: [pdfWidth, pdfHeight]
+                });
+
+                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
                 pdf.save(`CV_${resumeData.name.replace(' ', '_')}.pdf`);
     
             }).catch((err) => {
@@ -250,7 +226,7 @@ const App: React.FC = () => {
         <div id="cv-content" className="font-sans">
             <div className="relative flex size-full min-h-screen flex-col overflow-x-hidden">
                 <div className="layout-container flex h-full grow flex-col">
-                    <Header onTrackClick={handleTrackClick} />
+                    <Header />
                     <main className="flex-1 px-4 py-10 md:px-20 lg:px-40">
                         <div className={`cv-card mx-auto max-w-5xl rounded-2xl bg-slate-50/80 p-6 shadow-2xl backdrop-blur-sm sm:p-8 md:p-12 ${isContentLoaded ? 'loaded' : ''}`}>
                             <About
@@ -265,7 +241,7 @@ const App: React.FC = () => {
                                 <Education title="Educación" items={resumeData.education} />
                                 <Training title="Formación Adicional" items={resumeData.training} />
                                 <div id="download-cv-section" className="mt-20 text-center fade-in-element">
-                                    <button 
+                                    <button
                                         onClick={generatePdf}
                                         className="inline-flex items-center gap-2 rounded-md bg-[#1172d4] px-6 py-3 text-base font-semibold text-white shadow-sm transition-transform duration-200 hover:scale-105"
                                     >
@@ -273,11 +249,10 @@ const App: React.FC = () => {
                                         Descargar CV
                                     </button>
                                 </div>
-                                <Contact 
+                                <Contact
                                     email={resumeData.contact.email}
                                     phone={resumeData.contact.phone}
                                     links={resumeData.contact.links}
-                                    onTrackClick={handleTrackClick} 
                                 />
                             </div>
                         </div>
@@ -285,7 +260,6 @@ const App: React.FC = () => {
                     <Footer name={resumeData.name} />
                 </div>
             </div>
-            {cvContext && <AIAssistant cvContext={cvContext} onTrackClick={handleTrackClick} />}
         </div>
     );
 };

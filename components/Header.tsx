@@ -1,10 +1,6 @@
 import React from 'react';
 
-interface HeaderProps {
-    onTrackClick: (elementName: string) => void;
-}
-
-const Header: React.FC<HeaderProps> = ({ onTrackClick }) => {
+const Header: React.FC = () => {
     const navLinks = [
         { href: '#about', text: 'Sobre mí' },
         { href: '#experience', text: 'Experiencia' },
@@ -21,7 +17,6 @@ const Header: React.FC<HeaderProps> = ({ onTrackClick }) => {
                         <a
                             key={link.href}
                             href={link.href}
-                            onClick={() => onTrackClick(`nav_${link.text.toLowerCase()}`)}
                             className="text-sm font-medium text-slate-700 transition-all duration-200 hover:text-slate-900 hover:scale-110"
                         >
                             {link.text}

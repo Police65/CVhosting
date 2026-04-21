@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "types": [
-      "vite/client"
+      "vite/client",
+      "node"
     ],
     "target": "ES2022",
     "experimentalDecorators": true,
@@ -13,9 +14,6 @@
       "DOM.Iterable"
     ],
     "skipLibCheck": true,
-    "types": [
-      "node"
-    ],
     "moduleResolution": "bundler",
     "isolatedModules": true,
     "moduleDetection": "force",

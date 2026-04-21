@@ -1,14 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import QRCode from 'qrcode';
 import type { ResumeData } from '../types';
 import { MailIcon, PhoneIcon, LocationIcon } from './PdfIcons';
 
-const qrCodeUrl = "https://nkwlaqmbnaftpykkkhss.supabase.co/storage/v1/object/sign/images/qr_code%20(2)%20(1).png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8yNjJmZjYwZi1kZGZlLTQzZDAtOTNhZi0xYzNiYjJkZjgwMzUiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJpbWFnZXMvcXJfY29kZSAoMikgKDEpLnBuZyIsImlhdCI6MTc1NzA0MTQyNiwiZXhwIjozMzI5MzA0MTQyNn0.8Z-v3p6z2h89yniLlMQjejMOM_T7h6ScETBPMFD556w";
+const CV_URL = 'https://fermincv.onrender.com';
 
 const PdfLayout: React.FC<{ data: ResumeData }> = ({ data }) => {
+  const [qrDataUrl, setQrDataUrl] = useState('');
+
+  useEffect(() => {
+    QRCode.toDataURL(CV_URL, { width: 112, margin: 1, color: { dark: '#1e293b', light: '#ffffff' } })
+      .then(url => setQrDataUrl(url))
+      .catch(() => {});
+  }, []);
+
   return (
-    <div id="pdf-render-content" style={{ width: '794px', height: '1123px' }} className="flex font-sans text-sm bg-white">
+    <div id="pdf-render-content" style={{ width: '816px', minHeight: '1056px' }} className="flex font-sans text-sm bg-white">
       {/* Left Column */}
-      <aside className="w-[35%] bg-slate-800 text-white p-8 flex flex-col">
+      <aside style={{ width: '286px' }} className="bg-slate-800 text-white p-8 flex flex-col">
         {/* Main content of the sidebar */}
         <div>
           <div className="text-center">
@@ -64,13 +73,13 @@ const PdfLayout: React.FC<{ data: ResumeData }> = ({ data }) => {
 
         {/* QR Code section pushed to the bottom */}
         <div className="mt-auto text-center pt-6">
-          <img src={qrCodeUrl} alt="QR Code" className="w-28 h-28 mx-auto border-4 border-slate-500 rounded-lg" />
+          {qrDataUrl && <img src={qrDataUrl} alt="QR Code" className="w-28 h-28 mx-auto border-4 border-slate-500 rounded-lg" />}
           <p className="text-xs text-slate-400 mt-2">Visita mi CV Interactivo</p>
         </div>
       </aside>
 
       {/* Right Column */}
-      <main className="w-[65%] p-8 text-slate-800">
+      <main style={{ width: '530px' }} className="p-8 text-slate-800">
         <section>
           <h2 className="text-2xl font-bold text-slate-800 uppercase tracking-wider border-b-2 border-slate-200 pb-2 mb-6">Formación y Experiencia</h2>
 

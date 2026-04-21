@@ -5,14 +5,12 @@ interface ContactProps {
     email: string;
     phone: string;
     links: ContactLinkData[];
-    onTrackClick: (name: string) => void;
 }
 
-const ContactItem: React.FC<{ href: string; onClick: () => void; icon: React.ReactNode; title: string; subtitle: string; className?: string; style?: React.CSSProperties }> = 
-({ href, onClick, icon, title, subtitle, className, style }) => (
+const ContactItem: React.FC<{ href: string; icon: React.ReactNode; title: string; subtitle: string; className?: string; style?: React.CSSProperties }> =
+({ href, icon, title, subtitle, className, style }) => (
     <a
         href={href}
-        onClick={onClick}
         className={`flex items-center gap-4 rounded-lg bg-slate-100 p-4 transition-all duration-200 hover:bg-slate-200 hover:scale-105 ${className || ''}`}
         style={style}
         target={href.startsWith('http') ? '_blank' : undefined}
@@ -29,25 +27,22 @@ const ContactItem: React.FC<{ href: string; onClick: () => void; icon: React.Rea
 );
 
 
-const Contact: React.FC<ContactProps> = ({ email, phone, links, onTrackClick }) => {
+const Contact: React.FC<ContactProps> = ({ email, phone, links }) => {
     const contactItems = [
-        { 
-            href: `mailto:${email}`, 
-            onClick: () => onTrackClick('contact_email'),
+        {
+            href: `mailto:${email}`,
             icon: <span className="material-symbols-outlined text-2xl">mail</span>,
             title: "Email",
             subtitle: email
         },
-        { 
-            href: `tel:${phone.replace(/\s/g, '')}`, 
-            onClick: () => onTrackClick('contact_phone'),
+        {
+            href: `tel:${phone.replace(/\s/g, '')}`,
             icon: <span className="material-symbols-outlined text-2xl">phone</span>,
             title: "Teléfono",
             subtitle: phone
         },
         ...links.map(link => ({
             href: link.href,
-            onClick: () => onTrackClick(link.name),
             icon: link.icon,
             title: link.text,
             subtitle: link.href.replace(/^https?:\/\//, '')
@@ -59,7 +54,7 @@ const Contact: React.FC<ContactProps> = ({ email, phone, links, onTrackClick }) 
             <h2 className="text-3xl font-bold tracking-tight text-slate-900">Contacto</h2>
             <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
                 {contactItems.map((item, index) => (
-                    <ContactItem 
+                    <ContactItem
                         key={item.title}
                         {...item}
                         className="fade-in-element"
