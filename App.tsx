@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom/client';
 import Header from './components/Header';
 import About from './components/About';
 import Experience from './components/Experience';
@@ -8,10 +7,10 @@ import Education from './components/Education';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import Training from './components/Training';
-import PdfLayout from './components/PdfLayout';
+import CvPdfDocument from './components/CvPdfDocument';
+import { pdf } from '@react-pdf/renderer';
+import QRCode from 'qrcode';
 import type { ResumeData } from './types';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 import { imageUrls } from './assets';
 
 
@@ -138,6 +137,7 @@ const resumeData: ResumeData = {
 
 const App: React.FC = () => {
     const [isContentLoaded, setIsContentLoaded] = useState(false);
+    const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
     useEffect(() => {
         // Animation observer for fade-in elements
@@ -163,62 +163,31 @@ const App: React.FC = () => {
         };
     }, []);
 
-    const generatePdf = () => {
-    
-        const pdfContainer = document.createElement('div');
-        pdfContainer.style.position = 'absolute';
-        pdfContainer.style.left = '-9999px';
-        pdfContainer.style.top = '0';
-        document.body.appendChild(pdfContainer);
-    
-        const root = ReactDOM.createRoot(pdfContainer);
-        root.render(<PdfLayout data={resumeData} />);
-    
-        setTimeout(() => {
-            const pdfElement = pdfContainer.querySelector('#pdf-render-content');
-            if (!pdfElement) {
-                console.error("PDF content element not found for rendering.");
-                root.unmount();
-                document.body.removeChild(pdfContainer);
-                return;
-            }
-    
-            const htmlElement = pdfElement as HTMLElement;
-            // Temporarily adjust style for full capture
-            const originalHeight = htmlElement.style.height;
-            htmlElement.style.height = 'auto';
-    
-            html2canvas(htmlElement, {
-                scale: 2,
-                useCORS: true,
-            }).then(canvas => {
-                const imgData = canvas.toDataURL('image/png');
-                
-                // Ancho base tamaño carta (Letter) en mm
-                const pdfWidth = 215.9; 
-                // Calculamos la altura manteniendo la relación de aspecto exacta del contenedor
-                const pdfHeight = pdfWidth * (canvas.height / canvas.width);
-
-                // Al usar un formato de tamaño dinámico evitamos que jsPDF intente escalar 
-                // la imagen dejando márgenes (barras) blancas a los lados
-                const pdf = new jsPDF({
-                    orientation: 'p',
-                    unit: 'mm',
-                    format: [pdfWidth, pdfHeight]
-                });
-
-                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-                pdf.save(`CV_${resumeData.name.replace(' ', '_')}.pdf`);
-    
-            }).catch((err) => {
-                console.error("PDF generation failed:", err);
-            }).finally(() => {
-                // Restore original style and clean up
-                htmlElement.style.height = originalHeight;
-                root.unmount();
-                document.body.removeChild(pdfContainer);
+    const generatePdf = async () => {
+        if (isGeneratingPdf) return;
+        setIsGeneratingPdf(true);
+        try {
+            const qrDataUrl = await QRCode.toDataURL('https://fermincv.onrender.com', {
+                width: 224,
+                margin: 1,
+                color: { dark: '#1e293b', light: '#ffffff' },
             });
-        }, 500);
+
+            const doc = <CvPdfDocument data={resumeData} qrDataUrl={qrDataUrl} />;
+            const blob = await pdf(doc).toBlob();
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `CV_${resumeData.name.replace(' ', '_')}.pdf`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        } catch (err) {
+            console.error('PDF generation failed:', err);
+        } finally {
+            setIsGeneratingPdf(false);
+        }
     };
 
 
@@ -243,10 +212,11 @@ const App: React.FC = () => {
                                 <div id="download-cv-section" className="mt-20 text-center fade-in-element">
                                     <button
                                         onClick={generatePdf}
-                                        className="inline-flex items-center gap-2 rounded-md bg-[#1172d4] px-6 py-3 text-base font-semibold text-white shadow-sm transition-transform duration-200 hover:scale-105"
+                                        disabled={isGeneratingPdf}
+                                        className="inline-flex items-center gap-2 rounded-md bg-[#1172d4] px-6 py-3 text-base font-semibold text-white shadow-sm transition-transform duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                                     >
                                         <span className="material-symbols-outlined">download</span>
-                                        Descargar CV
+                                        {isGeneratingPdf ? 'Generando...' : 'Descargar CV'}
                                     </button>
                                 </div>
                                 <Contact

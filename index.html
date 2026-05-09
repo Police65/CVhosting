@@ -55,63 +55,6 @@
         transform: scale(1);
       }
 
-      /* Styles for PDF generation */
-      .pdf-content {
-        background-image: none !important;
-        background-color: white !important;
-      }
-      .pdf-content header,
-      .pdf-content footer,
-      .pdf-content .fixed, /* Hides AI Assistant */
-      .pdf-content #download-cv-section /* Hides Download CV button */
-      {
-        display: none !important;
-      }
-      .pdf-content main {
-          padding: 0 !important;
-          margin: 0 !important;
-      }
-      .pdf-content .mx-auto.max-w-5xl {
-          margin: 0 !important;
-          max-width: 100% !important;
-          border-radius: 0 !important;
-          box-shadow: none !important;
-          backdrop-filter: none !important;
-          -webkit-backdrop-filter: none !important;
-          background-color: white !important;
-          padding: 1.5rem !important;
-      }
-      .pdf-content * {
-        color: #1e293b !important;
-        border-color: #e2e8f0 !important;
-      }
-      .pdf-content h1, .pdf-content h2, .pdf-content h3, .pdf-content h4, .pdf-content h5, .pdf-content h6 {
-        color: #0f172a !important;
-      }
-      .pdf-content p, .pdf-content li, .pdf-content span, .pdf-content div {
-        color: #334155 !important;
-      }
-      .pdf-content .bg-slate-100,
-      .pdf-content .bg-slate-200,
-      .pdf-content .bg-slate-200\/60 {
-           background-color: #f1f5f9 !important;
-      }
-      .pdf-content .text-\[\#1172d4\] {
-           color: #1172d4 !important;
-       }
-
-      /* PDF Layout Fixes */
-      .pdf-content #contact .grid {
-          display: block !important; /* Override grid layout to prevent column issues */
-      }
-      .pdf-content #contact .grid > * {
-          margin-bottom: 1rem !important; /* Re-add spacing lost from grid-gap */
-      }
-      .pdf-content .truncate {
-          white-space: normal !important; /* Allow long URLs to wrap */
-          overflow-wrap: break-word !important; /* Break long words/URLs */
-          word-break: break-word !important;
-      }
     </style>
 <script type="importmap">
 {
@@ -119,9 +62,7 @@
     "react/": "https://aistudiocdn.com/react@^19.1.1/",
     "react": "https://aistudiocdn.com/react@^19.1.1",
     "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.17.0",
-    "html2canvas": "https://aistudiocdn.com/html2canvas@^1.4.1",
-    "jspdf": "https://aistudiocdn.com/jspdf@^3.0.2"
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.17.0"
   }
 }
 </script>
