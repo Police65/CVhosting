@@ -2,7 +2,10 @@ import React from 'react';
 import type { SkillsData } from '../types';
 
 interface SkillsProps {
-    skills: SkillsData;
+  skills: SkillsData;
+  title: string;
+  technicalLabel: string;
+  languagesLabel: string;
 }
 
 const SkillPill: React.FC<{ children: React.ReactNode; className?: string; style?: React.CSSProperties }> = ({ children, className, style }) => (
@@ -11,16 +14,16 @@ const SkillPill: React.FC<{ children: React.ReactNode; className?: string; style
     </div>
 );
 
-const Skills: React.FC<SkillsProps> = ({ skills }) => {
+const Skills: React.FC<SkillsProps> = ({ skills, title, technicalLabel, languagesLabel }) => {
     const allSkills = [...skills.strong, ...skills.basic];
     return (
         <section id="skills" className="fade-in-element">
-            <h2 className="text-3xl font-bold tracking-tight text-slate-900">Habilidades</h2>
+            <h2 className="text-3xl font-bold tracking-tight text-slate-900">{title}</h2>
             <div className="mt-8">
-                <h3 className="text-lg font-semibold text-slate-800 mb-4">Técnicas</h3>
+                <h3 className="text-lg font-semibold text-slate-800 mb-4">{technicalLabel}</h3>
                 <div className="flex flex-wrap gap-3">
                     {allSkills.map((skill, index) => (
-                        <SkillPill 
+                        <SkillPill
                             key={index}
                             className="fade-in-element"
                             style={{ transitionDelay: `${index * 50}ms` }}
@@ -31,10 +34,10 @@ const Skills: React.FC<SkillsProps> = ({ skills }) => {
                 </div>
             </div>
             <div className="mt-8">
-                <h3 className="text-lg font-semibold text-slate-800 mb-4">Idiomas</h3>
+                <h3 className="text-lg font-semibold text-slate-800 mb-4">{languagesLabel}</h3>
                 <div className="flex flex-wrap gap-3">
                     {skills.languages.map((lang, index) => (
-                        <SkillPill 
+                        <SkillPill
                             key={index}
                             className="fade-in-element"
                             style={{ transitionDelay: `${(allSkills.length + index) * 50}ms` }}

@@ -1,6 +1,8 @@
 import React from 'react';
 import { Document, Page, Text, View, Image, StyleSheet, Link, Font } from '@react-pdf/renderer';
 import type { ResumeData } from '../types';
+import type { Lang } from '../i18n';
+import { labels } from '../i18n';
 import { PdfMailIcon, PdfPhoneIcon, PdfLocationIcon, PdfLinkedInIcon, PdfGitHubIcon } from './PdfSvgIcons';
 
 Font.register({
@@ -35,7 +37,6 @@ const styles = StyleSheet.create({
     padding: PAGE_PADDING,
     color: '#334155',
   },
-  // Sidebar styles
   avatar: {
     width: 72,
     height: 72,
@@ -129,7 +130,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 4,
   },
-  // Main content styles
   sectionHeading: {
     fontSize: 14,
     fontWeight: 700,
@@ -208,7 +208,8 @@ const iconMap: Record<string, React.FC> = {
   github: PdfGitHubIcon,
 };
 
-const CvPdfDocument: React.FC<{ data: ResumeData; qrDataUrl: string }> = ({ data, qrDataUrl }) => {
+const CvPdfDocument: React.FC<{ data: ResumeData; qrDataUrl: string; lang: Lang }> = ({ data, qrDataUrl, lang }) => {
+  const t = labels[lang];
   const allSkills = [...data.skills.strong, ...data.skills.basic];
 
   return (
@@ -220,7 +221,7 @@ const CvPdfDocument: React.FC<{ data: ResumeData; qrDataUrl: string }> = ({ data
           <Text style={styles.nameText}>{data.name}</Text>
           <Text style={styles.titleText}>{data.title}</Text>
 
-          <Text style={styles.sectionTitleSidebar}>Contacto</Text>
+          <Text style={styles.sectionTitleSidebar}>{t.pdfContact}</Text>
           <View style={styles.contactItem}>
             <PdfMailIcon />
             <Text style={styles.contactText}>{data.contact.email}</Text>
@@ -245,30 +246,30 @@ const CvPdfDocument: React.FC<{ data: ResumeData; qrDataUrl: string }> = ({ data
             );
           })}
 
-          <Text style={styles.sectionTitleSidebar}>Habilidades</Text>
+          <Text style={styles.sectionTitleSidebar}>{t.pdfSkills}</Text>
           <View style={styles.skillsContainer}>
             {allSkills.map((skill) => (
               <Text key={skill} style={styles.skillPill}>{skill}</Text>
             ))}
           </View>
 
-          <Text style={styles.sectionTitleSidebar}>Idiomas</Text>
-          {data.skills.languages.map((lang) => (
-            <View key={lang.lang} style={styles.languageRow}>
-              <Text style={styles.languageName}>{lang.lang}</Text>
-              <Text style={styles.languageLevel}>{lang.level}</Text>
+          <Text style={styles.sectionTitleSidebar}>{t.pdfLanguages}</Text>
+          {data.skills.languages.map((langItem) => (
+            <View key={langItem.lang} style={styles.languageRow}>
+              <Text style={styles.languageName}>{langItem.lang}</Text>
+              <Text style={styles.languageLevel}>{langItem.level}</Text>
             </View>
           ))}
 
           <View style={{ marginTop: 'auto', alignItems: 'center' }}>
             {qrDataUrl && <Image src={qrDataUrl} style={styles.qrCode} />}
-            <Text style={styles.qrLabel}>Visita mi CV Interactivo</Text>
+            <Text style={styles.qrLabel}>{t.pdfQrLabel}</Text>
           </View>
         </View>
 
         {/* Main Content */}
         <View style={styles.mainContent}>
-          <Text style={styles.sectionHeading}>Formación y Experiencia</Text>
+          <Text style={styles.sectionHeading}>{t.pdfMainHeading}</Text>
 
           {data.experience.map((item, index) => (
             <View key={`exp-${index}`} style={styles.experienceItem}>
@@ -284,7 +285,7 @@ const CvPdfDocument: React.FC<{ data: ResumeData; qrDataUrl: string }> = ({ data
           ))}
 
           <View style={styles.divider} />
-          <Text style={styles.subSectionTitle}>Educación</Text>
+          <Text style={styles.subSectionTitle}>{t.pdfEducation}</Text>
           {data.education.map((item, index) => (
             <View key={`edu-${index}`} style={{ marginBottom: 6 }}>
               <Text style={styles.eduTitle}>{item.title}</Text>
@@ -293,7 +294,7 @@ const CvPdfDocument: React.FC<{ data: ResumeData; qrDataUrl: string }> = ({ data
           ))}
 
           <View style={styles.divider} />
-          <Text style={styles.subSectionTitle}>Cursos y Formación</Text>
+          <Text style={styles.subSectionTitle}>{t.pdfTraining}</Text>
           {data.training.map((item, index) => (
             <View key={`trn-${index}`} style={{ marginBottom: 6 }}>
               <Text style={styles.trainingTitle}>{item.title}</Text>

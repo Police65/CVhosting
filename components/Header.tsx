@@ -1,14 +1,15 @@
 import React from 'react';
 
-const Header: React.FC = () => {
-    const navLinks = [
-        { href: '#about', text: 'Sobre mí' },
-        { href: '#experience', text: 'Experiencia' },
-        { href: '#skills', text: 'Habilidades' },
-        { href: '#education', text: 'Educación' },
-        { href: '#contact', text: 'Contacto' },
-    ];
+interface NavLink {
+  href: string;
+  text: string;
+}
 
+interface HeaderProps {
+  navLinks: NavLink[];
+}
+
+const Header: React.FC<HeaderProps> = ({ navLinks }) => {
     return (
         <header className="sticky top-0 z-40 w-full border-b border-slate-200 bg-slate-50/90 backdrop-blur-lg">
             <div className="mx-auto flex h-16 max-w-5xl items-center justify-end px-4 md:px-20 lg:px-40">

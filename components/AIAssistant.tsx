@@ -1,6 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { askAssistant } from '../services/geminiService';
 
+// NOTA: Este componente está deshabilitado intencionalmente por costo operativo.
+// No está montado en App.tsx. Para reactivarlo: configurar VITE_GEMINI_API_KEY en .env
+// y añadir <AIAssistant cvContext={JSON.stringify(resumeData)} /> en App.tsx.
+
 interface Message {
     text: string;
     sender: 'user' | 'ai';

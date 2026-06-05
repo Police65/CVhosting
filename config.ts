@@ -7,6 +7,9 @@ declare global {
   }
 }
 
+// NOTA: La API key se deja vacía intencionalmente. El asistente de IA (AIAssistant)
+// está deshabilitado por costo operativo. Para reactivarlo, configurar VITE_GEMINI_API_KEY
+// en el archivo .env y montar el componente AIAssistant en App.tsx.
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY || "";
 
 export const geminiConfig = {

@@ -1,5 +1,9 @@
 import { GoogleGenAI } from "@google/genai";
-import { geminiConfig } from '../config'; // Importar desde el archivo de configuración
+import { geminiConfig } from '../config';
+
+// NOTA: Este servicio está deshabilitado intencionalmente por costo operativo.
+// El componente AIAssistant no está montado en App.tsx. Para reactivar el asistente
+// de IA, configurar VITE_GEMINI_API_KEY en .env y montar <AIAssistant /> en App.tsx.
 
 let ai: GoogleGenAI | null = null;
 
