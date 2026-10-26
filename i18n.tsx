@@ -81,10 +81,20 @@ const githubIcon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24
 
 export const resumeDataEs: ResumeData = {
     name: "Fermin Chirinos",
-    title: "Desarrollador de Software y Automatización con IA",
+    title: "Desarrollador Full-Stack, Backend y Automatización con IA",
     avatarUrl: '/avatar.jpeg',
     about: "Hola, soy Fermin Chirinos. T.S.U. en Informática egresado de IUTEPAL y un apasionado desarrollador con un fuerte enfoque en automatizaciones, agentes autónomos y soluciones que emplean inteligencia artificial. Mi especialidad es crear herramientas eficientes como bots de atención al público con IA, flujos de trabajo automatizados y sistemas de acciones automáticas. También programas de escritorio y apps. Me encantan los retos, estoy siempre aprendiendo y me dedico por completo a mi trabajo.",
     experience: [
+        {
+            period: "Jul. 2026 - Actualidad",
+            title: "Desarrollador Full-Stack, Backend y de Automatización de Software",
+            company: "Old Oaks · Medio tiempo",
+            description: [
+                "Automatización de procesos y flujos de trabajo del negocio.",
+                "Integración con CRM y obtención de datos clave para la operación.",
+                "Desarrollo backend y full-stack, incluyendo landings bilingües y documentación técnica.",
+            ],
+        },
         {
             period: "Abr. 2026 - Jul. 2026",
             title: "Desarrollador de Software y Automatizaciones",
@@ -172,8 +182,8 @@ export const resumeDataEs: ResumeData = {
         },
     ],
     skills: {
-        strong: ["TypeScript", "JavaScript", "React", "Next.js", "Tailwind CSS", "Vite", "PostgreSQL", "Supabase", "Firebase", "n8n", "Agentes Autónomos", "Uso adecuado de herramientas de IA", "Webhooks y Flujos de Trabajo", "Bots con IA", "Flutter", "C#"],
-        basic: ["MySQL", "SQL Server Management Studio", "Python", "Java (Android Studio)", "GOlang", "Svelte JS", "Tauri", "Bootstrap", "PHP", "Rust"],
+        strong: ["TypeScript", "JavaScript", "React", "Next.js", "Tailwind CSS", "Vite", "Python", "Django", "PostgreSQL", "Docker", "Supabase", "Firebase", "n8n", "Agentes Autónomos", "Uso adecuado de herramientas de IA", "Webhooks y Flujos de Trabajo", "Bots con IA", "Flutter", "C#"],
+        basic: ["MySQL", "SQL Server Management Studio", "Java (Android Studio)", "GOlang", "Svelte JS", "Tauri", "Bootstrap", "PHP", "Rust"],
         languages: [
             { flag: "🇪🇸", lang: "Español", level: "Nativo" },
             { flag: "🇬🇧", lang: "Inglés", level: "Medio (lo suficiente para leer escribir, entender y contestar en llamadas con no tanto lexico)" },
@@ -202,10 +212,20 @@ export const resumeDataEs: ResumeData = {
 
 export const resumeDataEn: ResumeData = {
     name: "Fermin Chirinos",
-    title: "Software Developer & AI Automation Specialist",
+    title: "Full-Stack, Backend & AI Automation Developer",
     avatarUrl: '/avatar.jpeg',
     about: "Hi, I'm Fermin Chirinos. Associate Degree in Computer Science from IUTEPAL, and a passionate developer with a strong focus on automation, autonomous agents, and AI-powered solutions. My specialty is building efficient tools like AI-powered customer service bots, automated workflows, and self-actioning systems. I also build desktop applications and mobile apps. I love challenges, I'm always learning, and I'm fully dedicated to my work.",
     experience: [
+        {
+            period: "Jul. 2026 - Present",
+            title: "Full-Stack, Backend & Software Automation Developer",
+            company: "Old Oaks · Part-time",
+            description: [
+                "Automation of business processes and workflows.",
+                "CRM integration and collection of key data for operations.",
+                "Backend and full-stack development, including bilingual landing pages and technical documentation.",
+            ],
+        },
         {
             period: "Apr. 2026 - Jul. 2026",
             title: "Software & Automation Developer",
@@ -293,8 +313,8 @@ export const resumeDataEn: ResumeData = {
         },
     ],
     skills: {
-        strong: ["TypeScript", "JavaScript", "React", "Next.js", "Tailwind CSS", "Vite", "PostgreSQL", "Supabase", "Firebase", "n8n", "Autonomous Agents", "Effective Use of AI Tools", "Webhooks & Workflows", "AI Bots", "Flutter", "C#"],
-        basic: ["MySQL", "SQL Server Management Studio", "Python", "Java (Android Studio)", "GOlang", "Svelte JS", "Tauri", "Bootstrap", "PHP", "Rust"],
+        strong: ["TypeScript", "JavaScript", "React", "Next.js", "Tailwind CSS", "Vite", "Python", "Django", "PostgreSQL", "Docker", "Supabase", "Firebase", "n8n", "Autonomous Agents", "Effective Use of AI Tools", "Webhooks & Workflows", "AI Bots", "Flutter", "C#"],
+        basic: ["MySQL", "SQL Server Management Studio", "Java (Android Studio)", "GOlang", "Svelte JS", "Tauri", "Bootstrap", "PHP", "Rust"],
         languages: [
             { flag: "🇪🇸", lang: "Spanish", level: "Native" },
             { flag: "🇬🇧", lang: "English", level: "Fluent" },
