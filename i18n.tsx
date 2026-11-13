@@ -186,13 +186,13 @@ export const resumeDataEs: ResumeData = {
         basic: ["MySQL", "SQL Server Management Studio", "Java (Android Studio)", "GOlang", "Svelte JS", "Tauri", "Bootstrap", "PHP", "Rust"],
         languages: [
             { flag: "🇪🇸", lang: "Español", level: "Nativo" },
-            { flag: "🇬🇧", lang: "Inglés", level: "Medio (lo suficiente para leer escribir, entender y contestar en llamadas con no tanto lexico)" },
+            { flag: "🇬🇧", lang: "Inglés", level: "Profesional escrito (chat, lectura y comprensión auditiva); expresión oral básica" },
         ],
     },
     contact: {
-        location: "Valencia - Carabobo, Venezuela",
+        location: "UTC-4 · Disponible en horario de EE. UU. (Mountain/Eastern)",
         email: "ferlpzwork65ds@gmail.com",
-        phone: "+58 4244358426",
+        phone: "+1 (808) 301-8648",
         links: [
             {
                 name: "linkedin",
@@ -317,13 +317,13 @@ export const resumeDataEn: ResumeData = {
         basic: ["MySQL", "SQL Server Management Studio", "Java (Android Studio)", "GOlang", "Svelte JS", "Tauri", "Bootstrap", "PHP", "Rust"],
         languages: [
             { flag: "🇪🇸", lang: "Spanish", level: "Native" },
-            { flag: "🇬🇧", lang: "English", level: "Fluent" },
+            { flag: "🇬🇧", lang: "English", level: "Professional written (chat, reading, listening); basic spoken" },
         ],
     },
     contact: {
-        location: "Valencia - Carabobo, Venezuela",
+        location: "UTC-4 · Available during US hours (Mountain/Eastern)",
         email: "ferlpzwork65ds@gmail.com",
-        phone: "+58 4244358426",
+        phone: "+1 (808) 301-8648",
         links: [
             {
                 name: "linkedin",
